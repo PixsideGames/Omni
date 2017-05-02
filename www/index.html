@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta name="format-detection" content="telephone=no" />
+  <meta name="msapplication-tap-highlight" content="no" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width" />
+  <!-- This is a wide open CSP declaration. To lock this down for production, see below. -->
+  <meta http-equiv="Content-Security-Policy" content="default-src * 'unsafe-inline'; style-src 'self' 'unsafe-inline'; media-src *" />
+    <!-- Good default declaration:
+    * gap: is required only on iOS (when using UIWebView) and is needed for JS->native communication
+    * https://ssl.gstatic.com is required only on Android and is needed for TalkBack to function properly
+    * Disables use of eval() and inline scripts in order to mitigate risk of XSS vulnerabilities. To change this:
+        * Enable inline JS: add 'unsafe-inline' to default-src
+        * Enable eval(): add 'unsafe-eval' to default-src
+    * Create your own at http://cspisawesome.com
+  -->
+  <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: gap: 'unsafe-inline' https://ssl.gstatic.com; style-src 'self' 'unsafe-inline'; media-src *" /> -->
+  <!-- As 3 meta tags acima *devem* vir em primeiro lugar dentro do `head`; qualquer outro conteúdo deve vir *após* essas tags -->
+  <title>Omni Labs App</title>
+
+  <!-- Bootstrap -->
+  <link href="css/bootstrap.min.css" rel="stylesheet">
+
+  <link href="css/jquery-ui.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" type="text/css" href="./slick/slick.css">
+  <link rel="stylesheet" type="text/css" href="./slick/slick-theme.css">
+
+  <!-- Css Padrão -->
+  <link href="css/app.css" rel="stylesheet">
+
+  <!-- HTML5 shim e Respond.js para suporte no IE8 de elementos HTML5 e media queries -->
+  <!-- ALERTA: Respond.js não funciona se você visualizar uma página file:// -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+      <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+      <![endif]-->
+
+      <!-- jQuery (obrigatório para plugins JavaScript do Bootstrap) -->
+      <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>-->
+      <script type="text/javascript" src="js/jquery.js"></script>
+      <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+
+      <script src="./slick/slick.js" type="text/javascript" charset="utf-8"></script>
+
+      <!-- Inclui todos os plugins compilados (abaixo), ou inclua arquivos separadados se necessário -->
+      <script src="js/bootstrap.min.js"></script>
+
+
+      <script type="text/javascript">
+        $(document).ready(function()
+        {
+          var bgColors = ["#8ecece","#f3edcb", "#d2b9bc", "#aea9c7", "#f4be5e"];
+
+          var productPos;       
+
+          $("#main-screen").hide(); 
+          $(".cozinha").hide(); 
+          $(".quarto").hide();          
+
+          $("#product").draggable({
+            containment: '.ad-canvas'         
+          });
+
+          $("#product").resizable();
+
+          function hideAllScenes()
+          {
+            $(".quarto").hide();
+            $(".cozinha").hide();
+            $(".sala").hide();
+          }
+
+          $("#product").mousemove(function(event){
+            productPos = $("#product").position();
+
+            /*$(".test").text(productPos.left + " " + productPos.top);*/           
+
+          });
+
+          $('.product-slider').slick({
+            dots: false,
+            infinite: true,
+            speed: 300,
+            slidesToShow: 1,
+            centerMode: true,
+            variableWidth: true
+          });
+
+          $('.scene-slider').slick({
+            dots: false,
+            infinite: true,
+            speed: 300,
+            slidesToShow: 1,
+            centerMode: true,
+            variableWidth: true
+          });
+
+          $(".product-option").click(function(){
+            var src = $(this).attr("src");
+            $("#product img").attr("src", src);
+          });
+
+          $(".scene-option").click(function(){
+            var src = $(this).attr("src");
+            $("#scene img").attr("src", src);
+          });
+
+          $("#btn-product").click(function(){
+            $("body").css("background-color", bgColors[2]);
+            $("#main-screen").hide();
+            $("#product-screen").show();
+          });
+
+          $("#btn-scene").click(function(){
+            $("body").css("background-color", bgColors[3]);
+            $("#main-screen").hide();
+            $("#scene-screen").show();
+          });
+          
+          $(".btn-products-b").click(function(){
+            $("body").css("background-color", bgColors[1]);
+            $("#main-screen").show();
+            $("#product-screen").hide();
+          });
+
+          $("#close-scenes").click(function(){
+            $("body").css("background-color", bgColors[1]);
+            $("#main-screen").show();
+            $("#scene-screen").hide();
+          });
+
+          $("#btn-sala").click(function(){
+            hideAllScenes();
+            $(".sala").show();
+            $("body").css("background-color", bgColors[1]);
+            $("#main-screen").show();
+            $("#scene-screen").hide();
+          });
+          $("#btn-quarto").click(function(){
+            hideAllScenes();
+            $(".quarto").show();
+            $("body").css("background-color", bgColors[1]);
+            $("#main-screen").show();
+            $("#scene-screen").hide();
+          });
+          $("#btn-cozinha").click(function(){
+            hideAllScenes();
+            $(".cozinha").show();
+            $("body").css("background-color", bgColors[1]);
+            $("#main-screen").show();
+            $("#scene-screen").hide();
+          });
+
+          $("#login-form").submit(function (e){
+            e.preventDefault();          
+            $("body").css("background-color", bgColors[1]);
+            $("#login-screen").hide();
+            $("#main-screen").show();
+            return false;
+          });
+        /*$("#login-form").submit(function (e){
+        e.preventDefault();
+ 
+         $.ajax({
+            type: "POST",
+            url: "http://localhost/OmniLabs/conexao.php", 
+            data: {                
+                user: $("#user").val(),
+                pass: $("#pass").val()
+            },            
+            async: false,
+            dataType: "json", 
+            success: function (json) {
+ 
+                if(json.result == true){
+                   //redireciona o usuario para pagina
+                   alert(json.dados.user);
+                   $(".test").html(json.dados.user);
+                    
+                }else{
+                   alert(json.msg);
+                }
+            },error: function(xhr,e,t){
+                console.log(xhr.responseText);                
+            }
+        });
+      });*/
+
+    });
+  </script>
+</head>
+<body>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12" id="login-screen">
+        <div class="row">
+         <div class="col-md-4 col-md-offset-4 col-sm-10 col-sm-offset-1 col-xs-12">
+          <img src="images/logo-omni.png" class="img-responsive center-block">
+        </div>
+      </div>
+      <div class="row">
+       <div class="col-md-12 col-sm-12 col-xs-12">
+        <form id="login-form">
+          <div class="row">
+            <div class="col-md-4 col-md-offset-4 col-sm-10 col-sm-offset-1 col-xs-12 form-group">
+              <input type="text" name="user" id="user" placeholder="Usuário" class="form-control input-lg">
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-4 col-md-offset-4 col-sm-10 col-sm-offset-1 col-xs-12 form-group">
+              <input type="password" name="pass" id="pass" placeholder="Senha" class="form-control input-lg">
+            </div>
+          </div>
+          <div class="row">              
+            <div class="col-md-4 col-md-offset-4 col-sm-10 col-sm-offset-1 col-xs-12">
+              <input type="submit" class="btn btn-login btn-primary btn-lg btn-block" value="Entrar">
+            </div>
+          </div>
+        </form>            
+      </div>
+    </div>          
+  </div> 
+
+
+
+  <div class="col-md-12 col-sm-12 col-xs-12" id="main-screen" hidden>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-10 col-xs-offset-1">
+        <img src="images/logo-omni.png" class="img-responsive center-block">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <button class="btn btn-default btn-products btn-block" id="btn-product">
+              <img src="images/search-icon.png">
+              PRODUTO
+            </button>
+          </div>
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <button class="btn btn-default btn-products btn-block" id="btn-scene">
+              <img src="images/search-icon.png">
+              AMBIENTE
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="ad-canvas">
+              <div id="scene">
+                <img src="environments/sala8.png" class="img-responsive">
+              </div>
+              <div id="product">
+                <img src="products/celular3.png" class="img-responsive">          
+              </div>
+              <div class="save-button">
+                <span class="glyphicon glyphicon-floppy-disk"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="ad-canvas">
+              <div class="slider scene-slider sala">                
+                  <img src="environments/sala1.png" class="scene-option">
+                  <img src="environments/sala2.png" class="scene-option">
+                  <img src="environments/sala3.png" class="scene-option">
+                  <img src="environments/sala4.png" class="scene-option"> 
+                  <img src="environments/sala5.png" class="scene-option">
+                  <img src="environments/sala6.png" class="scene-option">
+                  <img src="environments/sala7.png" class="scene-option">
+                  <img src="environments/sala8.png" class="scene-option">
+                  <img src="environments/sala9.png" class="scene-option">
+                  <img src="environments/sala10.png" class="scene-option">                
+              </div>
+              <div class="slider scene-slider cozinha">                
+                  <img src="environments/cozinha1.png" class="scene-option">
+                  <img src="environments/cozinha2.png" class="scene-option">
+                  <img src="environments/cozinha3.png" class="scene-option">
+                  <img src="environments/cozinha4.png" class="scene-option"> 
+                  <img src="environments/cozinha5.png" class="scene-option">               
+              </div>
+              <div class="slider scene-slider quarto">                
+                  <img src="environments/quarto1.png" class="scene-option">
+                  <img src="environments/quarto2.png" class="scene-option">                          
+              </div>
+            </div>
+          </div>         
+        </div>
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="ad-canvas">
+              <div class="slider product-slider">
+                <img src="products/celular1.png" class="product-option">
+                <img src="products/celular2.png" class="product-option">
+                <img src="products/celular3.png" class="product-option">
+                <img src="products/celular4.png" class="product-option"> 
+                <img src="products/notebook1.png" class="product-option">
+                <img src="products/notebook2.png" class="product-option">
+                <img src="products/notebook3.png" class="product-option">
+                <img src="products/notebook4.png" class="product-option">               
+              </div>
+            </div>
+          </div>         
+        </div>
+
+
+        <div class="row">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+              <div id="menu">
+                <div class="col-md-2 col-sm-2 col-xs-4">
+                  <button class="btn btn-default btn-menu1 btn-block"><img src="images/icon1.png" class="img-responsive"></button>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-4">
+                  <button class="btn btn-default btn-menu2 btn-block"><img src="images/icon2.png" class="img-responsive"></button>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-4">
+                  <button class="btn btn-default btn-menu3 btn-block"><img src="images/icon3.png" class="img-responsive"></button>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-4">
+                  <button class="btn btn-default btn-menu4 btn-block"><img src="images/icon4.png" class="img-responsive"></button>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-4">
+                  <button class="btn btn-default btn-menu5 btn-block"><img src="images/icon5.png" class="img-responsive"></button>
+                </div>
+                <div class="col-md-2 col-sm-2 col-xs-4">
+                  <button class="btn btn-default btn-menu6 btn-block"><img src="images/icon6.png" class="img-responsive"></button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+      </div>
+
+    </div>
+  </div>
+
+
+
+
+
+  <div class="col-md-12 col-sm-12 col-xs-12" id="product-screen" hidden>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-10 col-xs-offset-1">
+        <img src="images/logo-omni.png" class="img-responsive center-block">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
+        <div class="row">
+          <div class="col-md-6 col-sm-6 col-xs-12">
+            <button class="btn btn-default btn-products-b btn-lg btn-block">
+              <img src="images/search-icon-b.png">
+              PRODUTO
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+            <button class="btn btn-default btn-products-b btn-lg btn-block">              
+              CELULARES E TABLETS
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+            <button class="btn btn-default btn-products-b btn-block">              
+              TELEVISORES
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+            <button class="btn btn-default btn-products-b btn-block">              
+              MÓVEIS
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+            <button class="btn btn-default btn-products-b btn-block">              
+              ELETRODOMÉSTICOS
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+            <button class="btn btn-default btn-products-b btn-block">              
+              COMPUTADORES
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-10 col-sm-2 col-sm-offset-10 col-xs-4 col-xs-offset-8">
+            <button class="btn btn-default btn-products-b btn-block" id="close-products">  
+              <span class="glyphicon glyphicon-remove"> </span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+
+
+  <div class="col-md-12 col-sm-12 col-xs-12" id="scene-screen" hidden>
+    <div class="row">
+      <div class="col-md-4 col-md-offset-4 col-sm-4 col-sm-offset-4 col-xs-10 col-xs-offset-1">
+        <img src="images/logo-omni.png" class="img-responsive center-block">
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
+        <div class="row">
+          <div class="col-md-6 col-md-offset-6 col-sm-6 col-sm-offset-6 col-xs-12">
+            <button class="btn btn-default btn-products-c btn-lg btn-block">
+              <img src="images/search-icon-c.png">
+              AMBIENTE
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+            <button class="btn btn-default btn-products-c btn-lg btn-block" id="btn-sala">             
+              SALA
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+            <button class="btn btn-default btn-products-c btn-lg btn-block" id="btn-quarto">              
+              QUARTO
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+            <button class="btn btn-default btn-products-c btn-lg btn-block" id="btn-cozinha">              
+              COZINHA
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-md-offset-1 col-sm-10 col-sm-offset-1 col-xs-10 col-xs-offset-1">
+            <button class="btn btn-default btn-products-c btn-lg btn-block">              
+              LAVANDERIA
+            </button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-2 col-md-offset-10 col-sm-2 col-sm-offset-10 col-xs-4 col-xs-offset-8">
+            <button class="btn btn-default btn-products-c btn-block" id="close-scenes">  
+              <span class="glyphicon glyphicon-remove"> </span>
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+
+
+</div>     
+</div>
+</div> 
+
+<script type="text/javascript" src="cordova.js"></script>
+<script type="text/javascript" src="js/index.js"></script>
+<script type="text/javascript" src="js/jquery.ui.touch-punch.min.js"></script>
+<script type="text/javascript">
+  app.initialize();
+</script>      
+</body>
+</html>
