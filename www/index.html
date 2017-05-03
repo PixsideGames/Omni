@@ -58,13 +58,18 @@
 
           $("#main-screen").hide(); 
           $(".cozinha").hide(); 
-          $(".quarto").hide();          
+          $(".quarto").hide(); 
+
+
 
           $("#product").draggable({
             containment: '.ad-canvas'         
           });
 
-          $("#product").resizable();
+          $("#product").resizable({
+		    helper: "ui-resizable-helper",
+		    ghost: true
+		  });
 
           function hideAllScenes()
           {
@@ -100,6 +105,21 @@
 
           $(".product-option").click(function(){
             var src = $(this).attr("src");
+            
+            var width = $(this).width();
+            var height = $(this).height();
+
+            $("#product").show();
+
+            if(width > height)
+            {            	
+            	$("#product").css({"height":"300px", "width":"400px"});
+            }
+            else
+            {
+            	$("#product").css({"width":"170px","height":"300px"});            	
+            }
+
             $("#product img").attr("src", src);
           });
 
@@ -254,8 +274,8 @@
               <div id="scene">
                 <img src="environments/sala8.png" class="img-responsive">
               </div>
-              <div id="product">
-                <img src="products/celular3.png" class="img-responsive">          
+              <div id="product" hidden>
+                <img src="products/celular3.png">          
               </div>
               <div class="save-button">
                 <span class="glyphicon glyphicon-floppy-disk"></span>
@@ -305,7 +325,8 @@
                 <img src="products/notebook1.png" class="product-option">
                 <img src="products/notebook2.png" class="product-option">
                 <img src="products/notebook3.png" class="product-option">
-                <img src="products/notebook4.png" class="product-option">               
+                <img src="products/notebook4.png" class="product-option">                
+                             
               </div>
             </div>
           </div>         
