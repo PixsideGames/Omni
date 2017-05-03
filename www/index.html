@@ -107,20 +107,12 @@
             var src = $(this).attr("src");
             
             var width = $(this).width();
-            var height = $(this).height();
-
-            $("#product").show();
-
-            if(width > height)
-            {            	
-            	$("#product").css({"height":"300px", "width":"400px"});
-            }
-            else
-            {
-            	$("#product").css({"width":"170px","height":"300px"});            	
-            }
-
-            $("#product img").attr("src", src);
+            var height = $(this).height();          
+            
+            $("#product img").attr("src", src);             
+            $("#product").css({"height":height, "width":width+15});
+            $("#product img").css({"height":"100%", "width":"100%"});
+			$("#product").show();
           });
 
           $(".scene-option").click(function(){
